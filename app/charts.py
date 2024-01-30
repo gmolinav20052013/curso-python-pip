@@ -1,11 +1,20 @@
 import matplotlib.pyplot as plt
 import readcsv
+import pandas as pd
 
 
 def generate_bar_chart(labels,values):
     fig, ax = plt.subplots()
     ax.bar(labels, values)
     plt.show()
+
+def generate_pie_chart(labels,values):
+    fig, ax = plt.subplots()
+    ax.pie(values, labels=labels)
+    # ax.pie(values, labels=labels, autopct='%1.1f')
+    # plt.show()
+    plt.savefig('pie.png')
+    plt.close()
 
 
 def get_population(country_dict):
@@ -27,7 +36,21 @@ def population_by_country(data,country):
     result = list(filter(lambda item: item['Country/Territory'] == country,data))
     return result
 
-data = readcsv.read_csv('./wpopulation.csv')
+df = pd.read_csv('./wpopulation.csv')
+df = df[df['Continent'] == 'South America']
+print(df)
+
+countries = df['Country/Territory'].values
+percentages = df['World Population Percentage'].values
+
+generate_pie_chart(countries,percentages)
+
+
+
+
+
+# data = readcsv.read_csv('./wpopulation.csv')
+'''
 country = input('Digite el pais => ')
 result = population_by_country(data,country)
 
@@ -35,7 +58,7 @@ if len(result) > 0:
     country = result[0]
     labels, values = get_population(country)
     generate_bar_chart(labels, values)
-
+'''
 
 # labels = ['a','b','c']
 # values = [100,200,380]
